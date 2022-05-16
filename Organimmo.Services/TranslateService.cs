@@ -16,7 +16,7 @@ namespace Organimmo.Services
             _Json = json;
         }
 
-        public string TranslateWord(string text, string translation)
+        public async Task<string> TranslateWord(string text, string translation)
         {
             text = translation;
             return text;
