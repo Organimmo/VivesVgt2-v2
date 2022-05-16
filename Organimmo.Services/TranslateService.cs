@@ -9,16 +9,19 @@ namespace Organimmo.Services
 {
     public class TranslateService : ITranslateService
     {
-        private readonly string Json;
+        private readonly string json;
 
-        public TranslateService()
+        public TranslateService(string json)
         {
                 
         }
 
-        public string TranslateWord(string Json)
+        public string TranslateWord(string text, string Translation)
         {
-            throw new NotImplementedException();
+            text = Translation;
+            return text;
         }
+
+       
     }
 }

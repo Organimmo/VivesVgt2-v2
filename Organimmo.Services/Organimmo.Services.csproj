@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Organimmo.Model\Organimmo.Model.csproj" />
+    <ProjectReference Include="..\Organimmo.Services.Model\Organimmo.Services.Model.csproj" />
+  </ItemGroup>
+
 </Project>

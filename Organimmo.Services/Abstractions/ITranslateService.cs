@@ -8,6 +8,6 @@ namespace Organimmo.Services.Abstractions
 {
     public interface ITranslateService
     {
-        string TranslateWord(string Json);
+        string TranslateWord(string text, string Translation);
     }
 }
