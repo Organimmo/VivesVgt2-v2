@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Organimmo.Services.Model\Organimmo.Services.Model.csproj" />
     <ProjectReference Include="..\Organimmo.Services\Organimmo.Services.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <ProjectReference Include="..\Organimmo.Model\Organimmo.Model.csproj" />
   </ItemGroup>
 
 </Project>
