@@ -1,9 +1,10 @@
 ﻿using Organimmo.Services.Model;
 using System.Net.Http.Json;
+using Organimmo.SDK.Contract;
 
 namespace Organimmo.SDK
 {
-    public class TranslateAPI
+    public class TranslateAPI: ITranslateAPI
     {
         private readonly IHttpClientFactory _httpClientFactory;
 

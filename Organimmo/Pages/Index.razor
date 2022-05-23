@@ -1,68 +1,99 @@
-﻿@page "/"
+﻿@attribute [RouteAttribute(BlazorRoutes.Translations.Index)]
+
 @using MudBlazor
+@using Organimmo.DAL
+@using Organimmo.Services.Model
+
 @inject ISnackbar SnackBar
-<MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
+@inject HttpClient Http
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>ApplicationName</th>
+            <th>ApplicationVersion</th>
+            <th>Customer</th>
+            <th>Username</th>
+            <th>Language</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@data!.id</td>
+            <td>@data.ApplicationName</td>
+            <td>@data.ApplicationVersion</td>
+            <td>@data.Customer</td>
+            <td>@data.Username</td>
+            <td>@data.Language</td>
+        </tr>
+    </tbody>
+</table>
+<MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<JsonModel,bool>(FilterFunc1)">
     <ToolBarContent>
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Name</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd  DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="Type">@context.Name</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
             <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
         </MudTd>
     </RowTemplate>
-  
+
     <RowEditingTemplate>
-        <MudTd  DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="Type">@context.Name</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
             <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required />
         </MudTd>
     </RowEditingTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{25, 50, 100}" />
+    <PagerContent>
+        <MudTablePager />
         </PagerContent>
 </MudTable>
 
 @code
 {
-    private JsonModel selectedItem = null;
+    private JsonModel selectedItem = null!;
+    private RootDto? data { get; set; } = new();
+    private string jsonFile="sample-data/data.json";
 
     private bool FilterFunc1(JsonModel translation) => FilterFunc(translation, _searchString);
 
     private string _searchString = "";
     private List<JsonModel> Translations = new List<JsonModel>();
+    private BlazorValidationSummary? _validation;
 
     protected override async Task OnInitializedAsync()
-    { 
+    {
         await base.OnInitializedAsync();
+        data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
+
         Translations = new List<JsonModel>();
         for (int i = 0; i < 1000; i++)
         {
             JsonModel employee = new JsonModel
-            {
-                Id = i,
-                Type = "Action",
-                Name = "Name",
-                DefaultTranslation = "Default",
-                CurrentTranslation = "Current",
-                SuggestedTranslation = "Suggested"
-            };
+                {
+                    Id = i,
+                    Type = "Action",
+                    Name = "Name",
+                    DefaultTranslation = "Default",
+                    CurrentTranslation = "Current",
+                    SuggestedTranslation = "Suggested"
+                };
             Translations.Add(employee);
 
         }
@@ -89,6 +120,23 @@
     private void Submit()
     {
         //TO Do...
+
+        /*var result = await ...(add api-call here);
+
+        if (!result.Succeeded)
+        {
+            _validation.AddValidationError(result.Errors);
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion couldn't be saved", Severity.Error,
+            config => { config.Icon = config.ErrorIcon; });
+            return;
+        }*/
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion successfully saved", Severity.Success,
+            config => { config.Icon = config.SuccessIcon; });
+
     }
 
 

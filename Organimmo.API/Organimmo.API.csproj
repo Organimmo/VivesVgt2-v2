@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Organimmo.SDK\Organimmo.SDK.csproj" />
     <ProjectReference Include="..\Organimmo.Services\Organimmo.Services.csproj" />
   </ItemGroup>
 

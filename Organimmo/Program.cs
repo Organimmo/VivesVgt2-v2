@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using Organimmo;
+using Organimmo.SDK;
+using Organimmo.SDK.Contract;
 using Organimmo.Services;
 using Organimmo.UI.Blazor;
 
