@@ -18,8 +18,10 @@ namespace Organimmo.Services
 
         public async Task<string> TranslateWord(string text, string translation)
         {
-            text = translation;
+            text = Translation;
             return text;
         }
+
+       
     }
 }
