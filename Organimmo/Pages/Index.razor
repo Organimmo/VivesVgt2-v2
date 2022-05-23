@@ -7,8 +7,9 @@
 @inject ISnackbar SnackBar
 @inject HttpClient Http
 
-<table class="table">
-    <thead>
+<MudPaper Elevation="3">
+    <table class="table">
+        <thead>
         <tr>
             <th>Id</th>
             <th>ApplicationName</th>
@@ -18,8 +19,8 @@
             <th>Language</th>
 
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr>
             <td>@data!.id</td>
             <td>@data.ApplicationName</td>
@@ -28,8 +29,10 @@
             <td>@data.Username</td>
             <td>@data.Language</td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</MudPaper>
+
 <MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<JsonModel,bool>(FilterFunc1)">
     <ToolBarContent>
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
@@ -47,19 +50,32 @@
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
-            <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
+            @if (IsEditing)
+            {
+                <MudPaper Elevation="0" Class="d-flex">
+                    <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required @onclick="Submit"/>
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="Submit"/>
+                </MudPaper>
+            }
+            else{
+                <MudPaper Elevation="0" Class="d-flex align-items-center">
+                <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
+                <MudIconButton  Class="ml-2" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small"/>
+                </MudPaper>
+
+            }
         </MudTd>
+       
     </RowTemplate>
 
-    <RowEditingTemplate>
+    @*<RowEditingTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Type">@context.Type</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
-            <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required />
         </MudTd>
-    </RowEditingTemplate>
+    </RowEditingTemplate>*@
     <PagerContent>
         <MudTablePager />
         </PagerContent>
@@ -67,15 +83,15 @@
 
 @code
 {
-    private JsonModel selectedItem = null!;
+    private JsonModel selectedItem = null;
     private RootDto? data { get; set; } = new();
     private string jsonFile="sample-data/data.json";
-
+    private bool IsEditing { get; set; }
     private bool FilterFunc1(JsonModel translation) => FilterFunc(translation, _searchString);
 
     private string _searchString = "";
     private List<JsonModel> Translations = new List<JsonModel>();
-    private BlazorValidationSummary? _validation;
+    private BlazorValidationSummary _validation;
 
     protected override async Task OnInitializedAsync()
     {
@@ -124,7 +140,7 @@
         /*var result = await ...(add api-call here);
 
         if (!result.Succeeded)
-        {
+            {
             _validation.AddValidationError(result.Errors);
 
         SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
@@ -139,5 +155,9 @@
 
     }
 
+    private void Edit()
+    {
+        IsEditing = !IsEditing;
 
+    }
 }
