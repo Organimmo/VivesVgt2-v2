@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organimmo.Services", "Organ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organimmo.Services.Model", "Organimmo.Services.Model\Organimmo.Services.Model.csproj", "{F9F3CE56-184C-4AFA-80C2-6959E03C3C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organimmo.SDK", "Organimmo.SDK\Organimmo.SDK.csproj", "{D855D78D-1F05-4379-A2B2-D6AE69E47077}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organimmo.SDK", "Organimmo.SDK\Organimmo.SDK.csproj", "{D855D78D-1F05-4379-A2B2-D6AE69E47077}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

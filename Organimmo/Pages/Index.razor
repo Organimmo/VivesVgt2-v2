@@ -1,6 +1,9 @@
 ﻿@page "/"
 @using MudBlazor
+@using Organimmo.UI.Blazor.Shared.ResourceFiles
 @inject ISnackbar SnackBar
+@inject IStringLocalizer<Resource> localizer
+
 <MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
     <ToolBarContent>
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
@@ -8,10 +11,10 @@
     <HeaderContent>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Name</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">@localizer["name"]</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">@localizer["defaulttranslation"] </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">@localizer["currenttranslation"] </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">@localizer["suggestedtranslation"] </MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd  DataLabel="Id">@context.Id</MudTd>
