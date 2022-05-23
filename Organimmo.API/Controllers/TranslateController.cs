@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Organimmo.Services;
 using Organimmo.Services.Abstractions;
 
+
 namespace Organimmo.API
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
     public class TranslateController : Controller
     {
