@@ -9,14 +9,14 @@ namespace Organimmo.Services
 {
     public class TranslateService : ITranslateService
     {
-        private readonly string json;
+        private readonly string _Json;
 
         public TranslateService(string json)
         {
-                
+            _Json = json;
         }
 
-        public string TranslateWord(string text, string Translation)
+        public async Task<string> TranslateWord(string text, string Translation)
         {
             text = Translation;
             return text;
