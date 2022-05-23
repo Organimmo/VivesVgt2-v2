@@ -3,7 +3,7 @@
 @inject ILocalStorageService localstorage
 
 <strong>Language:</strong>
-<select class="form-control" @bind= "Culture" style = "width: 200px; margin-left: 10px;">
+<select class="form-control" @bind= "Culture" style = "width: 250px; margin-left: 10px;">
     @foreach(var culture in cultures)
     {
         <option value = "@culture">@culture.DisplayName</option>
@@ -12,10 +12,11 @@
 
 @code {
     CultureInfo[] cultures = new[]
-            {
+                {
         new CultureInfo("fr-FR"),
         new CultureInfo("nl-NL"),
-        new CultureInfo("en-EN")
+        new CultureInfo("en-EN"),
+        new CultureInfo("es-ES")§
     };
 
     CultureInfo Culture
