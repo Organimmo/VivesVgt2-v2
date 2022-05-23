@@ -1,5 +1,4 @@
 ﻿@page "/"
-
 @using MudBlazor
 @inject ISnackbar SnackBar
 <MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
@@ -70,10 +69,27 @@
     }
 
 
-<h1>Hello, world!</h1>
+    private bool FilterFunc(JsonModel translation, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (translation.Type.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (translation.DefaultTranslation.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (translation.CurrentTranslation.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (translation.SuggestedTranslation.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{translation.Id} {translation.Id}".Contains(searchString))
+            return true;
+        return false;
+    }
 
-Welcome to your new app.
+    private void Submit()
+    {
+        //TO Do...
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
 
-<a href="fetchOrganimmoData" target="_blank">Ga naar data</a>
+}
