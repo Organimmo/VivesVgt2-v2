@@ -11,24 +11,24 @@ namespace Organimmo.Services.Model
     public class RootDto
     {
         [Display(Name = "Id")]
-        public string id { get; set; }
+        public string? id { get; set; }
 
         [Display(Name = "Application Name")]
-        public string ApplicationName { get; set; }
+        public string? ApplicationName { get; set; }
 
         [Display(Name = "Application Version")]
-        public string ApplicationVersion { get; set; }
+        public string? ApplicationVersion { get; set; }
 
         [Display(Name = "Customer")]
-        public string Customer { get; set; }
+        public string? Customer { get; set; }
 
         [Display(Name = "UserName")]
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         [Display(Name = "Language")]
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
         [Display(Name = "Window")]
-        public List<Window> Window { get; set; }
+        public List<Window>? Window { get; set; }
     }
 }
