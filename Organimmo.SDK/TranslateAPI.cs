@@ -59,7 +59,7 @@ namespace Organimmo.SDK
 
             httpResponse.EnsureSuccessStatusCode();
 
-            return await httpResponse.Content.ReadFromJsonAsync<ItemDto>();
+            return await httpResponse.Content.ReadFromJsonAsync<RootDto>();
         }
     }
 }

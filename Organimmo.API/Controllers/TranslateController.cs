@@ -19,7 +19,7 @@ namespace Organimmo.API
 
         [Route("/TranslateWord")]
         [HttpPost]
-        public async Task<IActionResult> TranslateWordAsync(string text, string translation)
+        public async Task<IActionResult> TranslateWordAsync(string BaseText, string CurrentText)
         {
             var word = await _translateService.TranslateWord(BaseText, CurrentText);
             return Ok(word);
@@ -31,5 +31,7 @@ namespace Organimmo.API
             var json = await _translateService.SerializeToJsonObject(root);
             return Ok(json);
         }
+
+     
     }
 }
