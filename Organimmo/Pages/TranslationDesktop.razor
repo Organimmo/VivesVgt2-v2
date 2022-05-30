@@ -7,6 +7,18 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IStringLocalizer<Resource> localizer
+<MudPaper Class="d-flex justify-content-center">
+    <MudImage Src="images/Organimo logo.png" Alt="" Elevation="25" Style="width:250px; height:75px;"/>
+</MudPaper>
+<MudPaper Class="col">
+    <label> Choose Filter:</label>
+    <select id="@MyItems" style="border:2px  solid black">
+        <option value="BaseText">BaseText</option>
+        <option value="CurrentText">CurrentText</option>
+    </select>
+
+</MudPaper>
+
 
 <MudTable Items="@MyItems" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<Item,bool>(FilterFunc1)">
     <ToolBarContent>
@@ -16,7 +28,8 @@
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<Item, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.BaseText)">@localizer["defaulttranslation"] </MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.CurrentText)">@localizer["currenttranslation"] </MudTableSortLabel></MudTh>
-    </HeaderContent>
+
+        </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Type">@context.Type</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.BaseText</MudTd>
@@ -36,9 +49,8 @@
 
             }
         </MudTd>
-       
-    </RowTemplate>
 
+    </RowTemplate>
     <PagerContent>
         <MudTablePager />
     </PagerContent>
@@ -49,14 +61,18 @@
 @code
 {
     private Item selectedItem = null;
+    private Item testtest = null;
+    private string test { get; set; }
     private RootDto? data { get; set; } = new();
     private string jsonFile="sample-data/data.json";
     private bool IsEditing { get; set; }
     private bool FilterFunc1(Item translation) => FilterFunc(translation, _searchString);
     private string _searchString = "";
     private BlazorValidationSummary _validation;
-
+    private bool IsBaseTextEmpty { get; set; }
+    private bool IsCurrentTextEmpty { get; set; }
     private List<Item> MyItems { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,6 +80,7 @@
         /*
         await localStorage.SetItemAsync("JsonFile", jsonFile);
         */
+     
         data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
 
         var window = data.Window;
@@ -74,14 +91,14 @@
             MyItems = item.Items;
         }
 
-        foreach(var item in MyItems)
+        foreach(var translation in MyItems)
         {
-            Item data = new Item
+            Item item = new Item
             { 
                 Type = "Action",
                 Name = "Name",
-                BaseText = item.BaseText,
-                CurrentText = item.CurrentText,
+                BaseText = translation.BaseText,
+                CurrentText = translation.CurrentText,
             };
         }
     }
