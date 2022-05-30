@@ -10,5 +10,6 @@ namespace Organimmo.SDK.Contract
     public interface  ITranslateAPI
     {
         Task<RootDto> Get(int id);
+        Task<ItemDto> CreateTranslation(ItemDto item);
     }
 }

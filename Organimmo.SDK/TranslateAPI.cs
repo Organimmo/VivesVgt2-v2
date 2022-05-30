@@ -62,5 +62,19 @@ namespace Organimmo.SDK
 
             return await httpResponse.Content.ReadFromJsonAsync<RootDto>();
         }
+
+
+        public async Task<RootDto>? DeserializeRootObject(string json)
+        {
+            var httpClient = _httpClientFactory.CreateClient("TranslateAPI");
+
+            var route = $"/DerializeRootAsync?jsonFile={json}";
+
+            var httpResponse = await httpClient.GetAsync(route);
+
+            httpResponse.EnsureSuccessStatusCode();
+
+            return await httpResponse.Content.ReadFromJsonAsync<RootDto>();
+        }
     }
 }
