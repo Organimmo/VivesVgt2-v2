@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="6.0.10" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Organimmo.Services\Organimmo.Services.csproj" />
   </ItemGroup>
 
 </Project>

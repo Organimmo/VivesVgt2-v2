@@ -1,4 +1,4 @@
-namespace Organimmo.API
+namespace Organimmo.RestApi
 {
     public class WeatherForecast
     {

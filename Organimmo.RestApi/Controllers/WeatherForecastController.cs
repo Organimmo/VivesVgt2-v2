@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Organimmo.API.Controllers
+namespace Organimmo.RestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
