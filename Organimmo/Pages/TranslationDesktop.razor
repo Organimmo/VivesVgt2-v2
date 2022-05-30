@@ -7,9 +7,6 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IStringLocalizer<Resource> localizer
-@*
-@inject ITranslateAPI _translate
-*@
 
 <MudTable Items="@MyItems" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<Item,bool>(FilterFunc1)">
     <ToolBarContent>
@@ -44,7 +41,7 @@
 
     <PagerContent>
         <MudTablePager />
-        </PagerContent>
+    </PagerContent>
 </MudTable>
 
 <button class="saveBtn" onClick=""><img src="/images/Save.png" width="300" height="75" /></button>
