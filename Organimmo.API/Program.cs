@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Organimmo.API.Organimmo.API;
 
 namespace Organimmo.API
@@ -15,5 +16,10 @@ namespace Organimmo.API
 				{
 					webBuilder.UseStartup<Startup>();
 				});
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddBlazoredLocalStorage();
+        }
 	}
 }

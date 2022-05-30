@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0-preview.1" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Organimmo.SDK\Organimmo.SDK.csproj" />
     <ProjectReference Include="..\Organimmo.Services\Organimmo.Services.csproj" />
   </ItemGroup>
 
