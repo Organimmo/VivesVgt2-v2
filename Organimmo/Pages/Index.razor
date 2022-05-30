@@ -2,6 +2,8 @@
 @using MudBlazor
 @inject ISnackbar SnackBar
 
+
+
 <img class="OrganimmoImage" src="/images/Organimo logo.png" alt="Organimo logo" width="215" height="55">
 
 <p class="WindowText">Window</p>
@@ -48,7 +50,6 @@
 
 @code
 {
-    private JsonModel selectedItem = null;
 
     private bool FilterFunc1(JsonModel translation) => FilterFunc(translation, _searchString);
 
