@@ -62,3 +62,43 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
+
+.mud-table-toolbar {
+    max-width: 15rem;
+    max-height: 2rem;
+    display: block;
+    float: right;
+    margin-bottom: 1rem;
+}
+
+.mud-table-head {
+    background-color: #F2F2F2;
+    color: #268E9C;
+}
+
+table {
+    color: #265875;
+    
+}
+
+.saveBtn {
+    position: fixed;
+    max-width: 2rem;
+    max-height: 0.5rem;
+    right: 5.8rem;
+    bottom: 2.8rem;
+    float: right;
+    padding-top: 2rem;
+}
+
+.OrganimmoImage {
+    top: -5rem;
+}
+
+.WindowText {
+    margin-top: 1rem;
+    color: #EA7C00;
+    font-weight: bold;
+}
