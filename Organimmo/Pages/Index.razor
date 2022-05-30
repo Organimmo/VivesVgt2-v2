@@ -3,9 +3,11 @@
 @using MudBlazor
 @using Organimmo.DAL
 @using Organimmo.Services.Model
+@using Blazored.LocalStorage
 
 @inject ISnackbar SnackBar
 @inject HttpClient Http
+@inject ILocalStorageService localStorage
 
 <MudPaper Elevation="3">
     <table class="table">
@@ -88,6 +90,8 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await localStorage.SetItemAsync("JsonFile", jsonFile);
+
         data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
 
         Translations = new List<JsonModel>();
@@ -149,6 +153,12 @@
     private void Edit()
     {
         IsEditing = !IsEditing;
+    }
+
+    private async Task Save()
+    {
+       var json = await localStorage.GetItemAsync<string>("JsonFile");
 
     }
+
 }
