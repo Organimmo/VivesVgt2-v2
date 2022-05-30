@@ -1,25 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Organimmo.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using Organimmo.Services.Abstractions;
 
-
-namespace Organimmo.API
+namespace Organimmo.API.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
-    public class TranslateController : Controller
+    public class TranslateController : ControllerBase
     {
-        private TranslateService _translateService;
-        public TranslateController(TranslateService service)
+
+        
+        private readonly ITranslateService _translateService;
+
+        public TranslateController(ITranslateService service)
         {
             _translateService = service;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> TranslateWordAsync(string text, string translation)
+
+        //[Route("/TranslateWordAsync/")]
+        [HttpPost("/TranslateWordAsync/")]
+        public async Task<IActionResult> TranslateWordAsync(string BaseText, string CurrentText)
         {
-            var word = await _translateService.TranslateWord(text, translation);
+            var word = await _translateService.TranslateWord(BaseText, CurrentText);
             return Ok(word);
         }
     }

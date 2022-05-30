@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Organimmo.Services.Model;
 
 namespace Organimmo.Services
 {
@@ -11,15 +12,17 @@ namespace Organimmo.Services
     {
         private readonly string _Json;
 
-        public TranslateService(string json)
+        public TranslateService()
         {
-            _Json = json;
+            //_Json = json;
         }
 
-        public async Task<string> TranslateWord(string text, string Translation)
+       
+
+        public async Task<string> TranslateWord(string BaseText, string CurrentText)
         {
-            text = Translation;
-            return text;
+            BaseText = CurrentText;
+            return BaseText;
         }
 
        
