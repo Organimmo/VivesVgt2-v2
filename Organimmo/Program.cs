@@ -2,11 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
-using Organimmo;
-using Organimmo.SDK;
-using Organimmo.SDK.Contract;
-using Organimmo.Services;
-using Organimmo.UI.Blazor;
+
 using Organimmo.UI.Blazor.Extensions;
 namespace Organimmo.UI.Blazor
 {

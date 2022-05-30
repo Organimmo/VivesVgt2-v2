@@ -8,6 +8,9 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IStringLocalizer<Resource> localizer
+@*
+@inject ITranslateAPI _translateApi
+*@
 
 <MudPaper Class="d-flex justify-content-center">
     <MudImage Src="images/Organimo logo.png" Alt="" Elevation="25" Style="width:250px; height:75px;"/>
@@ -58,18 +61,18 @@
     </PagerContent>
 </MudTable>
 
-<button class="saveBtn" onClick=""><img src="/images/Save.png" width="300" height="75" /></button>
+<button class="saveBtn" @onclick="SaveTranslation"><img src="/images/Save.png" width="300" height="75" /></button>
 
 @code
 {
     private Item selectedItem = null;
+    private ItemDto ItemDto { get; set; }
     private RootDto? data { get; set; } = new();
     private string jsonFile="sample-data/data.json";
     private bool IsEditing { get; set; }
     private bool FilterFunc1(Item translation) => FilterFunc(translation, _searchString);
     private string _searchString = "";
     private BlazorValidationSummary _validation;
-  
     private List<Item> MyItems { get; set; }
 
 
@@ -133,8 +136,8 @@
         }*/
 
         SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        SnackBar.Add("Suggestion successfully saved", Severity.Success,
-            config => { config.Icon = config.SuccessIcon; });
+        SnackBar.Add("Suggested translation was successfully saved!", Severity.Success,
+            config => { config.Icon = config.Icon=Icons.Filled.ThumbUpAlt; });
 
     }
 
@@ -145,9 +148,15 @@
 
     private async Task SaveTranslation()
     {
-        IsEditing = false;
+    //to do.. here you have to add the method to save the suggested word
+        /*
+        await _translateApi.CreateTranslation(ItemDto);
+        */
 
-        //to do.. here you have to add the method to save the suggested word
+            SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+            SnackBar.Add("Thank you for your suggestions!", Severity.Success,
+                config => { config.Icon = config.SuccessIcon; });
+
     }
 
 

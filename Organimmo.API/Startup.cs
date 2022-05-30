@@ -1,3 +1,5 @@
+using MudBlazor;
+using MudBlazor.Services;
 using Organimmo.Services;
 using Organimmo.Services.Abstractions;
 
@@ -58,6 +60,7 @@ namespace Organimmo.API
 
 
 				services.AddTransient<ITranslateService, TranslateService>();
+    
 			}
 
 			// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
