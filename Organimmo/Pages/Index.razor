@@ -85,21 +85,31 @@
     private List<JsonModel> Translations = new List<JsonModel>();
     private BlazorValidationSummary _validation;
 
+    private List<Item> MyItems { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
 
+        var window = data.Window;
+
+        foreach(var item in window)
+        {
+
+            MyItems = item.Items;
+
+        }
+
         Translations = new List<JsonModel>();
-        for (int i = 0; i < 1000; i++)
+        foreach(var item in MyItems)
         {
             JsonModel employee = new JsonModel
                 {
-                    Id = i,
                     Type = "Action",
                     Name = "Name",
-                    DefaultTranslation = "Default",
-                    CurrentTranslation = "Current",
+                    DefaultTranslation = item.BaseText,
+                    CurrentTranslation = item.CurrentText,
                     SuggestedTranslation = "Suggested"
                 };
             Translations.Add(employee);

@@ -31,6 +31,12 @@ namespace Organimmo.Services
             return jsonString;
         }
 
+        public async Task<RootDto> Deserialize(string jsonFile)
+        {
+            var root = JsonSerializer.Deserialize<RootDto>(jsonFile);
+            return root;
+        }
+
 
     }
 }

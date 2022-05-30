@@ -12,5 +12,7 @@ namespace Organimmo.Services.Abstractions
     {
         Task<string> TranslateWord(string text, string translation);
         Task<string> SerializeToJsonObject(RootDto root);
+
+        Task<RootDto> Deserialize(string jsonFile);
     }
 }

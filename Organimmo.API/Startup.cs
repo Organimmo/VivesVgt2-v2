@@ -1,6 +1,8 @@
 namespace Organimmo.API
 {
-	using Microsoft.AspNetCore.Builder;
+    using global::Organimmo.Services;
+    using global::Organimmo.Services.Abstractions;
+    using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.AspNetCore.HttpsPolicy;
 	using Microsoft.AspNetCore.Mvc;
@@ -9,15 +11,13 @@ namespace Organimmo.API
 	using Microsoft.Extensions.Hosting;
 	using Microsoft.Extensions.Logging;
 	using Microsoft.OpenApi.Models;
-    using Organimmo.Services;
-    using Organimmo.Services.Abstractions;
-    using System;
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
-	
-namespace Organimmo.API
-{
+
+	namespace Organimmo.API
+	{
 		public class Startup
 		{
 			private const string CorsPolicyName = "CorsPolicy";
@@ -53,12 +53,12 @@ namespace Organimmo.API
 					c.SwaggerDoc("v1", new OpenApiInfo { Title = "Organimmo.API", Version = "v1" });
 				});
 
-			
+
 				services.AddTransient<ITranslateService, TranslateService>();
-		}
+			}
 
 			// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
+			public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 			{
 				if (env.IsDevelopment())
 				{
@@ -66,7 +66,7 @@ namespace Organimmo.API
 					app.UseSwagger();
 					app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Organimmo.API v1"));
 
-				
+
 				}
 
 				app.UseHttpsRedirection();
@@ -84,3 +84,4 @@ namespace Organimmo.API
 			}
 		}
 	}
+}
