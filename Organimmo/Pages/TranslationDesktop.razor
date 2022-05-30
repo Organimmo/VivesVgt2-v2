@@ -1,0 +1,138 @@
+﻿
+@using MudBlazor
+@using Organimmo.DAL
+@using Organimmo.Services.Model
+
+@inject ISnackbar SnackBar
+@inject HttpClient Http
+@inject ILocalStorageService localStorage
+@inject IStringLocalizer<Resource> localizer
+
+<MudTable Items="@MyItems" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<Item,bool>(FilterFunc1)">
+    <ToolBarContent>
+        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Style="max-width: 5rem; margin-right:30px;"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<Item, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.BaseText)">@localizer["defaulttranslation"] </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.CurrentText)">@localizer["currenttranslation"] </MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="DefaultTranslation">@context.BaseText</MudTd>
+        <MudTd DataLabel="CurrentTranslation">
+            @if (IsEditing)
+            {
+                <MudPaper Elevation="0" Class="d-flex">
+                    <MudTextField @bind-Value="@context.CurrentText" Variant="Variant.Outlined" Required @onclick="Submit"/>
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="SaveTranslation"/>
+                </MudPaper>
+            }
+            else{
+                <MudPaper Elevation="0" Class="d-flex align-items-center">
+                    <MudIconButton Class="mr-2" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small"/>
+                    <MudText Typo="Typo.body2">@context.CurrentText</MudText>
+                </MudPaper>
+
+            }
+        </MudTd>
+       
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+<button class="saveBtn" onClick=""><img src="/images/Save.png" width="300" height="75" /></button>
+
+@code
+{
+    private Item selectedItem = null;
+    private RootDto? data { get; set; } = new();
+    private string jsonFile="sample-data/data.json";
+    private bool IsEditing { get; set; }
+    private bool FilterFunc1(Item translation) => FilterFunc(translation, _searchString);
+    private string _searchString = "";
+    private BlazorValidationSummary _validation;
+
+    private List<Item> MyItems { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        /*
+        await localStorage.SetItemAsync("JsonFile", jsonFile);
+        */
+        data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
+
+        var window = data.Window;
+
+        foreach(var item in window)
+        {
+
+            MyItems = item.Items;
+        }
+
+        foreach(var item in MyItems)
+        {
+            Item data = new Item
+            { 
+                Type = "Action",
+                Name = "Name",
+                BaseText = item.BaseText,
+                CurrentText = item.CurrentText,
+            };
+        }
+    }
+
+
+    private bool FilterFunc(Item translation, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (translation.Type.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (translation.BaseText.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (translation.CurrentText.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private void Submit()
+    {
+        //TO Do...
+
+        /*var result = await ...(add api-call here);
+
+        if (!result.Succeeded)
+            {
+            _validation.AddValidationError(result.Errors);
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion couldn't be saved", Severity.Error,
+            config => { config.Icon = config.ErrorIcon; });
+            return;
+        }*/
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion successfully saved", Severity.Success,
+            config => { config.Icon = config.SuccessIcon; });
+
+    }
+
+    private void Edit()
+    {
+        IsEditing = !IsEditing;
+    }
+
+    private async Task SaveTranslation()
+    {
+       var json = await localStorage.GetItemAsync<string>("JsonFile");
+        IsEditing = false;
+        //to do..
+    }
+
+
+}
