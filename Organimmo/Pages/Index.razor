@@ -5,51 +5,73 @@
 @using Organimmo.Services.Model
 
 @inject ISnackbar SnackBar
+@inject HttpClient Http
 
-<img class="OrganimmoImage" src="/images/Organimo logo.png" alt="Organimo logo" width="215" height="55">
+<MudPaper Elevation="3">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>ApplicationName</th>
+            <th>ApplicationVersion</th>
+            <th>Customer</th>
+            <th>Username</th>
+            <th>Language</th>
 
-<p class="WindowText">Window</p>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@data!.id</td>
+            <td>@data.ApplicationName</td>
+            <td>@data.ApplicationVersion</td>
+            <td>@data.Customer</td>
+            <td>@data.Username</td>
+            <td>@data.Language</td>
+        </tr>
+        </tbody>
+    </table>
+</MudPaper>
 
-<MudTable Style="position: fixed; top: 4rem; width: 100%;" Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
+<MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<JsonModel,bool>(FilterFunc1)">
     <ToolBarContent>
-        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" style="max-width= 5rem"></MudTextField>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Name</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd Class="fw-bold pa-3 mr-14" DataLabel="Id">@context.Id</MudTd>
-        <MudTd Class="fw-bold pa-3 mr-14" DataLabel="Type">@context.Type</MudTd>
-        <MudTd Class="fw-bold pa-3 mr-14" DataLabel="Type">@context.Name</MudTd>
-        <MudTd Class="fw-bold pa-3 mr-14" DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
-        <MudTd Class="fw-bold pa-3 mr-14"  DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
-        <MudTd Class="fw-bold pa-3 mr-14" DataLabel="SuggestedTranslation">
-            <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
-        </MudTd>
-       
-    </RowTemplate>
-  
-    <RowEditingTemplate>
-        <MudTd  DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="Type">@context.Name</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
-            <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required />
+            @if (IsEditing)
+            {
+                <MudPaper Elevation="0" Class="d-flex">
+                    <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required @onclick="Submit"/>
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="Submit"/>
+                </MudPaper>
+            }
+            else{
+                <MudPaper Elevation="0" Class="d-flex align-items-center">
+                <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
+                <MudIconButton  Class="ml-2" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small"/>
+                </MudPaper>
+
+            }
         </MudTd>
-    </RowEditingTemplate>
-        <PagerContent>
-            <MudTablePager HideRowsPerPage="true"/>
+       
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager />
         </PagerContent>
 </MudTable>
-
-<button class="saveBtn" onClick=""><img src="/images/Save.png" width="300" height="75" /></button>
 
 @code
 {
