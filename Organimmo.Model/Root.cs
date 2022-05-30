@@ -8,7 +8,7 @@ namespace Organimmo.DAL
 {
     public class Root
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         public string ApplicationName { get; set; }
         public string ApplicationVersion { get; set; }
         public string Customer { get; set; }

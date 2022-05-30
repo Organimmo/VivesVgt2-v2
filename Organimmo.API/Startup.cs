@@ -1,72 +1,85 @@
-using Microsoft.OpenApi.Models;
 using Organimmo.Services;
 using Organimmo.Services.Abstractions;
 
 namespace Organimmo.API
 {
-	public class Startup
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.HttpsPolicy;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.OpenApi.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    namespace Organimmo.API
     {
-        private const string CorsPolicyName = "CorsPolicy";
+        public class Startup
+        {
+            private const string CorsPolicyName = "CorsPolicy";
 
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
-
-		public static readonly ILoggerFactory ConsoleLoggerFactory
-			= LoggerFactory.Create(builder => { builder.AddConsole(); });
-
-		public IConfiguration Configuration { get; }
-
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-
-            services.AddCors(options =>
+            public Startup(IConfiguration configuration)
             {
-                options.AddPolicy(name: CorsPolicyName,
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            });
+                Configuration = configuration;
+            }
 
-			services.AddControllers();
-			services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Organimmo.API", Version = "v1" });
-			});
+            public static readonly ILoggerFactory ConsoleLoggerFactory
+                = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
-			
-			services.AddTransient<ITranslateService, TranslateService>();
-		}
+            public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Organimmo.API v1"));
+            // This method gets called by the runtime. Use this method to add services to the container.
+            public void ConfigureServices(IServiceCollection services)
+            {
 
-				
-			}
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(name: CorsPolicyName,
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                        });
+                });
 
-			app.UseHttpsRedirection();
+                services.AddControllers();
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Organimmo.API", Version = "v1" });
+                });
 
-			app.UseRouting();
 
-			app.UseAuthorization();
+                services.AddTransient<ITranslateService, TranslateService>();
+            }
 
-            app.UseCors(CorsPolicyName);
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseSwagger();
+                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Organimmo.API v1"));
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
-	}
+
+                }
+
+                app.UseHttpsRedirection();
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseCors(CorsPolicyName);
+
+                app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            }
+        }
+    }
 }

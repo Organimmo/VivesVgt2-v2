@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Organimmo.Services.Abstractions;
+using Organimmo.Services.Model;
 
-namespace Organimmo.API.Controllers
+namespace Organimmo.API
 {
     //[Route("api/[controller]")]
     [ApiController]
@@ -16,13 +17,21 @@ namespace Organimmo.API.Controllers
             _translateService = service;
         }
 
-
-        //[Route("/TranslateWordAsync/")]
-        [HttpPost("/TranslateWordAsync/")]
+        [Route("/TranslateWord")]
+        [HttpPost]
         public async Task<IActionResult> TranslateWordAsync(string BaseText, string CurrentText)
         {
             var word = await _translateService.TranslateWord(BaseText, CurrentText);
             return Ok(word);
         }
+
+        [HttpPost("/SerializeRootAsync/")]
+        public async Task<IActionResult> SerializeRootAsync(RootDto root)
+        {
+            var json = await _translateService.SerializeToJsonObject(root);
+            return Ok(json);
+        }
+
+     
     }
 }
