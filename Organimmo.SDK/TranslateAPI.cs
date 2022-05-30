@@ -37,12 +37,25 @@ namespace Organimmo.SDK
             return await httpResponse.Content.ReadFromJsonAsync<IList<ItemDto>>();
         }
 
-        public async Task<ItemDto>? Create(ItemDto item)
+        public async Task<ItemDto>? CreateTranslation(ItemDto item)
         {
             var httpClient = _httpClientFactory.CreateClient("TranslateAPI");
 
             var route = $"TranslateWordAsync?text={item.BaseText}&translation={item.CurrentText}";
             var httpResponse = await httpClient.PostAsJsonAsync<ItemDto>(route, item);
+
+            httpResponse.EnsureSuccessStatusCode();
+
+            return await httpResponse.Content.ReadFromJsonAsync<ItemDto>();
+        }
+
+
+        public async Task<RootDto>? CreateRootObject(RootDto root)
+        {
+            var httpClient = _httpClientFactory.CreateClient("TranslateAPI");
+
+            var route = $"/SerializeRootAsync";
+            var httpResponse = await httpClient.PostAsJsonAsync<RootDto>(route, root);
 
             httpResponse.EnsureSuccessStatusCode();
 
