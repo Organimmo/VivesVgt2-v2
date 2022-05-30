@@ -24,7 +24,7 @@
 
 <MudTable Items="@MyItems" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<Item,bool>(FilterFunc1)">
     <ToolBarContent>
-        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Style="max-width: 5rem; margin-right:30px;"></MudTextField>
+        <MudTextField Class="m-2" @bind-Value="_searchString" Style="border:2px solid darkgray" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<Item, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
