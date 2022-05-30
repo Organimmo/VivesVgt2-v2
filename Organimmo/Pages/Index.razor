@@ -9,6 +9,7 @@
 @inject ISnackbar SnackBar
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
+@inject IStringLocalizer<Resource> localizer
 
 <MudPaper Elevation="3">
     <table class="table">
@@ -43,9 +44,9 @@
     <HeaderContent>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">@localizer["defaulttranslation"] </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">@localizer["currenttranslation"] </MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">@localizer["suggestedtranslation"] </MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -57,7 +58,7 @@
             {
                 <MudPaper Elevation="0" Class="d-flex">
                     <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required @onclick="Submit"/>
-                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="Submit"/>
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="SaveTranslation"/>
                 </MudPaper>
             }
             else{
@@ -156,10 +157,11 @@
         IsEditing = !IsEditing;
     }
 
-    private async Task Save()
+    private async Task SaveTranslation()
     {
        var json = await localStorage.GetItemAsync<string>("JsonFile");
-
+        IsEditing = false;
     }
+
 
 }

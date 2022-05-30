@@ -20,15 +20,15 @@ namespace Organimmo.UI.Blazor
             builder.Services.AddLocalization();
             builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddMudServices();
-builder.Services.AddBlazoredLocalStorageAsSingleton();
-await builder.Build().RunAsync();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddMudServices();
+            builder.Services.AddBlazoredLocalStorageAsSingleton();
             var host = builder.Build();
             await host.SetDefaultCulture();
             await host.RunAsync();
+            await builder.Build().RunAsync();
+
+
         }
     }
 }
