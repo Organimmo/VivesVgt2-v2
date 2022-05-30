@@ -1,73 +1,121 @@
-﻿@page "/"
+﻿@attribute [RouteAttribute(BlazorRoutes.Translations.Index)]
+
 @using MudBlazor
+@using Organimmo.DAL
+@using Organimmo.Services.Model
+
 @inject ISnackbar SnackBar
-<MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
+@inject HttpClient Http
+
+<MudPaper Elevation="3">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>ApplicationName</th>
+            <th>ApplicationVersion</th>
+            <th>Customer</th>
+            <th>Username</th>
+            <th>Language</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@data!.id</td>
+            <td>@data.ApplicationName</td>
+            <td>@data.ApplicationVersion</td>
+            <td>@data.Customer</td>
+            <td>@data.Username</td>
+            <td>@data.Language</td>
+        </tr>
+        </tbody>
+    </table>
+</MudPaper>
+
+<MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<JsonModel,bool>(FilterFunc1)">
     <ToolBarContent>
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
-        <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Type)">Name</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.DefaultTranslation)">Default Translation </MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.CurrentTranslation)">Current Translation</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="true" SortBy="new Func<JsonModel, object>(x => x.SuggestedTranslation)">Suggested Translation </MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd  DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="Type">@context.Name</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
         <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
         <MudTd DataLabel="SuggestedTranslation">
-            <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
+            @if (IsEditing)
+            {
+                <MudPaper Elevation="0" Class="d-flex">
+                    <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required @onclick="Submit"/>
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="Submit"/>
+                </MudPaper>
+            }
+            else{
+                <MudPaper Elevation="0" Class="d-flex align-items-center">
+                <MudText Typo="Typo.body2">@context.SuggestedTranslation</MudText>
+                <MudIconButton  Class="ml-2" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small"/>
+                </MudPaper>
+
+            }
         </MudTd>
+       
     </RowTemplate>
-  
-    <RowEditingTemplate>
-        <MudTd  DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="Type">@context.Name</MudTd>
-        <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
-        <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
-        <MudTd DataLabel="SuggestedTranslation">
-            <MudTextField @bind-Value="@context.SuggestedTranslation" Variant="Variant.Outlined" Required />
-        </MudTd>
-    </RowEditingTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{25, 50, 100}" />
+
+    <PagerContent>
+        <MudTablePager />
         </PagerContent>
 </MudTable>
 
 @code
 {
     private JsonModel selectedItem = null;
-
+    private RootDto? data { get; set; } = new();
+    private string jsonFile="sample-data/data.json";
+    private bool IsEditing { get; set; }
     private bool FilterFunc1(JsonModel translation) => FilterFunc(translation, _searchString);
 
     private string _searchString = "";
     private List<JsonModel> Translations = new List<JsonModel>();
+    private BlazorValidationSummary _validation;
+
+    private List<Item> MyItems { get; set; }
 
     protected override async Task OnInitializedAsync()
-    { 
+    {
         await base.OnInitializedAsync();
+        data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
+
+        var window = data.Window;
+
+        foreach(var item in window)
+        {
+
+            MyItems = item.Items;
+
+        }
+
         Translations = new List<JsonModel>();
-        for (int i = 0; i < 1000; i++)
+        foreach(var item in MyItems)
         {
             JsonModel employee = new JsonModel
-            {
-                Id = i,
-                Type = "Action",
-                Name = "Name",
-                DefaultTranslation = "Default",
-                CurrentTranslation = "Current",
-                SuggestedTranslation = "Suggested"
-            };
+                {
+                    Type = "Action",
+                    Name = "Name",
+                    DefaultTranslation = item.BaseText,
+                    CurrentTranslation = item.CurrentText,
+                    SuggestedTranslation = "Suggested"
+                };
             Translations.Add(employee);
 
         }
     }
-
 
     private bool FilterFunc(JsonModel translation, string searchString)
     {
@@ -89,7 +137,28 @@
     private void Submit()
     {
         //TO Do...
+
+        /*var result = await ...(add api-call here);
+
+        if (!result.Succeeded)
+            {
+            _validation.AddValidationError(result.Errors);
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion couldn't be saved", Severity.Error,
+            config => { config.Icon = config.ErrorIcon; });
+            return;
+        }*/
+
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Suggestion successfully saved", Severity.Success,
+            config => { config.Icon = config.SuccessIcon; });
+
     }
 
+    private void Edit()
+    {
+        IsEditing = !IsEditing;
 
+    }
 }

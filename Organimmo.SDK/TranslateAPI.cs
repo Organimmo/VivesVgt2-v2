@@ -1,10 +1,11 @@
 ﻿using Organimmo.Services.Model;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Organimmo.SDK.Contract;
 
 namespace Organimmo.SDK
 {
-    public class TranslateAPI
+    public class TranslateAPI: ITranslateAPI
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -56,6 +57,20 @@ namespace Organimmo.SDK
 
             var route = $"/SerializeRootAsync";
             var httpResponse = await httpClient.PostAsJsonAsync<RootDto>(route, root);
+
+            httpResponse.EnsureSuccessStatusCode();
+
+            return await httpResponse.Content.ReadFromJsonAsync<RootDto>();
+        }
+
+
+        public async Task<RootDto>? DeserializeRootObject(string json)
+        {
+            var httpClient = _httpClientFactory.CreateClient("TranslateAPI");
+
+            var route = $"/DerializeRootAsync?jsonFile={json}";
+
+            var httpResponse = await httpClient.GetAsync(route);
 
             httpResponse.EnsureSuccessStatusCode();
 
