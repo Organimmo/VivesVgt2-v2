@@ -39,7 +39,7 @@
 
 <MudTable Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<JsonModel,bool>(FilterFunc1)">
     <ToolBarContent>
-        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 border bg-light"></MudTextField>
+        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" style="max-width= 5rem"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>
@@ -76,6 +76,8 @@
         <MudTablePager />
         </PagerContent>
 </MudTable>
+
+<button class="saveBtn" onClick=""><img src="/images/Save.png" width="300" height="75" /></button>
 
 @code
 {
