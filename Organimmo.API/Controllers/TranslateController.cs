@@ -32,7 +32,7 @@ namespace Organimmo.API
             return Ok(json);
         }
 
-        [HttpPost("/DerializeRootAsync/")]
+        [HttpGet("/DerializeRootAsync/")]
         public async Task<IActionResult> DerializeRootAsync(string jsonFile)
         {
             var json = await _translateService.Deserialize(jsonFile);
