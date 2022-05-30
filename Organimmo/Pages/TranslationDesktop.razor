@@ -1,5 +1,4 @@
-﻿
-@using MudBlazor
+﻿@using MudBlazor
 @using Organimmo.DAL
 @using Organimmo.SDK.Contract
 @using Organimmo.Services.Model
@@ -8,14 +7,11 @@
 @inject HttpClient Http
 @inject ILocalStorageService localStorage
 @inject IStringLocalizer<Resource> localizer
-@*
-@inject ITranslateAPI _translateApi
-*@
-
-<MudPaper Class="d-flex justify-content-center">
-    <MudImage Src="images/Organimo logo.png" Alt="" Elevation="25" Style="width:250px; height:75px;"/>
+<MudPaper Elevation="0" Class="d-flex justify-content-center">
+    <MudImage Src="images/Organimo logo.png" Alt="" Elevation="25" Style="width:250px; height:75px;" />
 </MudPaper>
-<MudPaper Class="col">
+
+<MudPaper Elevation="0" Class="col">
     <label> Choose Filter:</label>
     <select id="@MyItems" style="border:2px  solid black">
         <option value="BaseText">BaseText</option>
@@ -27,14 +23,14 @@
 
 <MudTable Items="@MyItems" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true" Filter="new Func<Item,bool>(FilterFunc1)">
     <ToolBarContent>
-        <MudTextField Class="m-2" @bind-Value="_searchString" Style="border:2px solid darkgray" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+        <MudTextField Class="m-2" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<Item, object>(x => x.Type)">Type</MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.BaseText)">@localizer["defaulttranslation"] </MudTableSortLabel></MudTh>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel Enabled="true" SortBy="new Func<Item, object>(x => x.CurrentText)">@localizer["currenttranslation"] </MudTableSortLabel></MudTh>
 
-        </HeaderContent>
+    </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Type">@context.Type</MudTd>
         <MudTd DataLabel="DefaultTranslation">@context.BaseText</MudTd>
@@ -42,13 +38,14 @@
             @if (IsEditing)
             {
                 <MudPaper Elevation="0" Class="d-flex">
-                    <MudTextField @bind-Value="@context.CurrentText" Variant="Variant.Outlined" Required @onclick="Submit"/>
-                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="SaveTranslation"/>
+                    <MudTextField @bind-Value="@context.CurrentText" Variant="Variant.Outlined" Required @onclick="SaveTranslation" />
+                    <MudIconButton Icon="@Icons.Filled.Check" OnClick="SaveTranslation" />
                 </MudPaper>
             }
-            else{
+            else
+            {
                 <MudPaper Elevation="0" Class="d-flex align-items-center">
-                    <MudIconButton Class="mr-2" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small"/>
+                    <MudIconButton Class="mr-2" Icon="@Icons.Filled.Edit" OnClick="Edit" Size="Size.Small" />
                     <MudText Typo="Typo.body2">@context.CurrentText</MudText>
                 </MudPaper>
 
@@ -61,14 +58,15 @@
     </PagerContent>
 </MudTable>
 
-<button class="saveBtn" @onclick="SaveTranslation"><img src="/images/Save.png" width="300" height="75" /></button>
+<MudPaper Elevation="0" Class="d-flex justify-content-end m-2">
+    <MudButton Class="text-white" Variant="Variant.Filled" Size="Size.Large" Style="background-color: #EA7C00;" OnClick="Submit"> SAVE </MudButton> 
+</MudPaper> 
 
 @code
 {
     private Item selectedItem = null;
-    private ItemDto ItemDto { get; set; }
     private RootDto? data { get; set; } = new();
-    private string jsonFile="sample-data/data.json";
+    private string jsonFile = "sample-data/data.json";
     private bool IsEditing { get; set; }
     private bool FilterFunc1(Item translation) => FilterFunc(translation, _searchString);
     private string _searchString = "";
@@ -79,29 +77,29 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
         await localStorage.SetItemAsync("JsonFile", jsonFile);
-      
-     
+
+
         data = await Http.GetFromJsonAsync<RootDto>(jsonFile);
 
         var window = data.Window;
 
-        foreach(var item in window)
+        foreach (var item in window)
         {
 
             MyItems = item.Items;
         }
 
-        foreach(var translation in MyItems)
+        foreach (var translation in MyItems)
         {
             Item item = new Item
-            { 
-                Type = "Action",
-                Name = "Name",
-                BaseText = translation.BaseText,
-                CurrentText = translation.CurrentText,
-            };
+                {
+                    Type = "Action",
+                    Name = "Name",
+                    BaseText = translation.BaseText,
+                    CurrentText = translation.CurrentText,
+                };
         }
     }
 
@@ -119,15 +117,16 @@
         return false;
     }
 
-    private void Submit()
+    private void SaveTranslation()
     {
+       
         //TO Do...
 
         /*var result = await ...(add api-call here);
-
+         *
         if (!result.Succeeded)
             {
-            _validation.AddValidationError(result.Errors);
+            _validation.AddValidationError("Something went wrong!");
 
         SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         SnackBar.Add("Suggestion couldn't be saved", Severity.Error,
@@ -137,7 +136,7 @@
 
         SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         SnackBar.Add("Suggested translation was successfully saved!", Severity.Success,
-            config => { config.Icon = config.Icon=Icons.Filled.ThumbUpAlt; });
+            config => { config.Icon = config.Icon = Icons.Filled.ThumbUpAlt; });
 
     }
 
@@ -146,16 +145,14 @@
         IsEditing = !IsEditing;
     }
 
-    private async Task SaveTranslation()
+    private async Task Submit()
     {
-    //to do.. here you have to add the method to save the suggested word
-        /*
-        await _translateApi.CreateTranslation(ItemDto);
-        */
+        //to do.. here you have to add the method to save the json
+        //  await _translateApi.CreateTranslation(...);
 
-            SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-            SnackBar.Add("Thank you for your suggestions!", Severity.Success,
-                config => { config.Icon = config.SuccessIcon; });
+        SnackBar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+        SnackBar.Add("Thank you for your suggestions!", Severity.Success,
+            config => { config.Icon = config.SuccessIcon; });
 
     }
 

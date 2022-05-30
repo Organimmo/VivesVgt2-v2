@@ -2,7 +2,8 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
-
+using Organimmo.SDK;
+using Organimmo.SDK.Contract;
 using Organimmo.UI.Blazor.Extensions;
 namespace Organimmo.UI.Blazor
 {
@@ -19,6 +20,8 @@ namespace Organimmo.UI.Blazor
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddMudServices();
             builder.Services.AddBlazoredLocalStorageAsSingleton();
+            builder.Services.AddScoped<ITranslateAPI, TranslateAPI>();
+
             var host = builder.Build();
             await host.SetDefaultCulture();
             await host.RunAsync();
