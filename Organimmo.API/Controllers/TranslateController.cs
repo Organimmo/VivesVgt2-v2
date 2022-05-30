@@ -21,7 +21,7 @@ namespace Organimmo.API
         [HttpPost]
         public async Task<IActionResult> TranslateWordAsync(string BaseText, string CurrentText)
         {
-            var word = await _translateService.TranslateWord(text, translation);
+            var word = await _translateService.TranslateWord(BaseText, CurrentText);
             return Ok(word);
         }
 
