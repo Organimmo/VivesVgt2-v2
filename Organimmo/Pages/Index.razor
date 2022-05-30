@@ -68,14 +68,6 @@
        
     </RowTemplate>
 
-    @*<RowEditingTemplate>
-        <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="Type">@context.Type</MudTd>
-        <MudTd DataLabel="DefaultTranslation">@context.DefaultTranslation</MudTd>
-        <MudTd DataLabel="CurrentTranslation">@context.CurrentTranslation</MudTd>
-        <MudTd DataLabel="SuggestedTranslation">
-        </MudTd>
-    </RowEditingTemplate>*@
     <PagerContent>
         <MudTablePager />
         </PagerContent>
@@ -114,7 +106,6 @@
 
         }
     }
-
 
     private bool FilterFunc(JsonModel translation, string searchString)
     {
