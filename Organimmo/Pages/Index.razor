@@ -8,7 +8,7 @@
 
 <MudTable Style="position: fixed; top: 4rem; width: 100%;" Items="@Translations" CanCancelEdit="true" SortLabel="Sort By" FixedHeader="true"  Filter="new Func<JsonModel,bool>(FilterFunc1)" >
     <ToolBarContent>
-        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" style="max-width= 5rem"></MudTextField>
+        <MudTextField class="Searchbar" @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" style="max-width: 5rem"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="fw-bold pa-3 mr-14"><MudTableSortLabel SortBy="new Func<JsonModel, object>(x => x.Id)">Id</MudTableSortLabel></MudTh>

@@ -4,7 +4,7 @@ using Organimmo.Services.Model;
 
 namespace Organimmo.API
 {
-    //[Route("api/[controller]")]
+    
     [ApiController]
     public class TranslateController : ControllerBase
     {
